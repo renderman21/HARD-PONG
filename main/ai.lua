@@ -34,9 +34,9 @@ end
 ---@param dt unknown delta time
 function AI:acquireTarget(dt)
    if Ball.y + Ball.height < self.y then
-      self.yVel = -self.speed * dt
+      self.yVel = -self.speed
    elseif Ball.y > self.y + self.height then
-      self.yVel = self.speed * dt
+      self.yVel = self.speed
    else
       self.yVel = 0
    end
