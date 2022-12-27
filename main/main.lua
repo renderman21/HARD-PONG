@@ -1,6 +1,6 @@
-require("player")
-require("ball")
-require("ai")
+require("main.player")
+require("main.ball")
+require("main.ai")
 
 ---Load the entities 
 function love.load()
