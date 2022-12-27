@@ -1,5 +1,5 @@
 
-
+---Initialize the object
 AI = {}
 
 
@@ -22,22 +22,21 @@ function AI:update(dt)
    self.timer = self.timer + dt
    if self.timer > self.rate then
       self.timer = 0
-      self:acquireTarget()
+      self:acquireTarget(dt)
    end
 end
 
----Move the AI
----@param dt any
 function AI:move(dt)
    self.y = self.y + self.yVel * dt
 end
 
-
-function AI:acquireTarget()
+---Tracks the ball
+---@param dt unknown delta time
+function AI:acquireTarget(dt)
    if Ball.y + Ball.height < self.y then
-      self.yVel = -self.speed
+      self.yVel = -self.speed * dt
    elseif Ball.y > self.y + self.height then
-      self.yVel = self.speed
+      self.yVel = self.speed * dt
    else
       self.yVel = 0
    end
