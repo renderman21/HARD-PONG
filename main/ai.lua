@@ -6,13 +6,13 @@ AI = {}
 function AI:load()
    self.width = 20
    self.height = 100
-   self.x = love.graphics.getWidth() - self.width - 50
-   self.y = love.graphics.getHeight() / 2
+   self.x = FULL_WINDOW_WIDTH - self.width - 50
+   self.y = FULL_WINDOW_HEIGHT / 2
    self.yVel = 0
    self.speed = 500
 
    self.timer = 0
-   self.rate = 0.5
+   self.rate = 0.25
 end
 
 
@@ -44,5 +44,7 @@ end
 
 
 function AI:draw()
+   love.graphics.setColor(255,0,0)
    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+   
 end
