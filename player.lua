@@ -16,7 +16,8 @@ function Player:update(dt)
    CheckBoundaries(Player)
 end
 
-
+---Move according to the buttons being pressed
+---@param dt unknown delta time
 function Player:move(dt)
    if love.keyboard.isDown("w") then
       self.y = self.y - self.speed * dt
