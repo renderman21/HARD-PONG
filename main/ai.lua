@@ -12,9 +12,14 @@ function AI:load()
    self.speed = 500
 
    self.timer = 0
-   self.rate = 0.25
+   self.rate = 0
 end
 
+---set the difficulty 
+---@param difficultyInt integer the set difficulty
+function AI:setDifficultyRate(difficultyInt)
+   self.rate = difficultyInt
+end
 
 function AI:update(dt)
    self:move(dt)
@@ -24,6 +29,7 @@ function AI:update(dt)
       self.timer = 0
       self:acquireTarget(dt)
    end
+
 end
 
 function AI:move(dt)
