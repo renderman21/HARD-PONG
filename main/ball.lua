@@ -6,11 +6,22 @@ function Ball:load()
    self.y = FULL_WINDOW_HEIGHT / 2
    self.width = 20
    self.height = 20
-   self.speed = 500
+   self.speed = 500 --Base 
+   self.difSpeed = 0
+   self.rate = 0
    self.xVel = -self.speed
    self.yVel = 0
    
    self.sound = love.audio.newSource("assets/sfx/hit.ogg","stream")
+end
+
+---Set the difficulty of the ball according to the following parameters
+---@param speed integer the initial speed of the ball
+---@param rate integer the amount of rate to be put into the ball for each hit
+function Ball:setDifficulty(speed, rate)
+   self.difSpeed = speed --Used for resetting
+   self.speed = self.difSpeed
+   self.rate = rate
 end
 
 function Ball:update(dt)
@@ -42,14 +53,10 @@ end
 ---@param mod any
 function Ball:ballEntityHit(entity, mod)
 
-   Player.speed = Player.speed + 50
-   AI.speed = AI.speed + 50
-
-   self.speed = self.speed + 100
+   self.speed = self.speed + self.rate
    self.xVel = self.speed * mod
-   local middleBall = self.y + self.height / 2
-   local middleEntity = entity.y + entity.height / 2
-   local collisionPosition = middleBall - middleEntity
+
+   local collisionPosition = (self.y + self.height / 2) - (entity.y + entity.height / 2)
    self.yVel = collisionPosition * 5
 
    self:playSound()
@@ -80,10 +87,9 @@ end
 ---@param mod integer changes the direction of the velocity
 function Ball:ballReset(mod)
    --Reset speed
-   self.speed = 500
+   self.speed = self.difSpeed
    Player.speed = 500
    AI.speed = 500
-
 
    self.x = FULL_WINDOW_WIDTH/ 2 - self.width / 2
    self.y = FULL_WINDOW_HEIGHT / 2 - self.height / 2
