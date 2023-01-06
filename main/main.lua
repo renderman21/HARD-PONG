@@ -48,19 +48,22 @@ function love.load()
    --Buttons for each Dificulty--
    EasyBtn = Button:new((FULL_WINDOW_WIDTH - 50)/ 2,  FULL_WINDOW_HEIGHT / 2,
    50, 100, function()
-      AI:setDifficultyRate(0.50)
+      AI:setDifficulty(0.50)
+      Ball:setDifficulty(200, 10)
       SelectDifScreen = false
    end, "Easy")
 
    MediumBtn = Button:new((FULL_WINDOW_WIDTH - 50)/ 2,  (FULL_WINDOW_HEIGHT / 2) + 100,
    50, 100, function()
-      AI:setDifficultyRate(0.25)
+      AI:setDifficulty(0.25)
+      Ball:setDifficulty(350, 20)
       SelectDifScreen = false
    end, "Medium")
 
    HardBtn = Button:new((FULL_WINDOW_WIDTH - 50)/ 2, (FULL_WINDOW_HEIGHT / 2) + 200, 
    50, 100, function()
-      AI:setDifficultyRate(-0.01)
+      AI:setDifficulty(-0.01)
+      Ball:setDifficulty(500, 40)
       SelectDifScreen = false
    end, "Hard")
 
