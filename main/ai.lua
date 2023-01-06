@@ -17,7 +17,7 @@ end
 
 ---set the difficulty 
 ---@param difficultyInt integer the set difficulty
-function AI:setDifficultyRate(difficultyInt)
+function AI:setDifficulty(difficultyInt)
    self.rate = difficultyInt
 end
 
