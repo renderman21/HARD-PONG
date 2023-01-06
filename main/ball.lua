@@ -1,5 +1,3 @@
-
-
 Ball = {}
 
 
@@ -14,7 +12,6 @@ function Ball:load()
    
    self.sound = love.audio.newSource("assets/sfx/hit.ogg","stream")
 end
-
 
 function Ball:update(dt)
    self:move(dt)
@@ -47,8 +44,6 @@ function Ball:ballEntityHit(entity, mod)
 
    Player.speed = Player.speed + 50
    AI.speed = AI.speed + 50
-
-
 
    self.speed = self.speed + 100
    self.xVel = self.speed * mod
@@ -85,7 +80,7 @@ end
 ---@param mod integer changes the direction of the velocity
 function Ball:ballReset(mod)
    --Reset speed
-   self.speed = 500 
+   self.speed = 500
    Player.speed = 500
    AI.speed = 500
 
