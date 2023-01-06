@@ -11,30 +11,64 @@
       2.1 Yes, this is important
       2.2 This will also show the difficulties? Tas pwede kung AI yung player o since, may 
       dalawa pa kayo? 
+      2.3 Add an about page tho lol
    3. Add some bit of bells and whistles  
-      3.1 Hit sounds [DONE]
+      3.1 Hit sounds [DONE]   
+   4. Print velocity in the corner of the screen
+   5. Screen shakes (for another time)
 ]]
 
 require "player"
 require "ball"
 require"ai"
 require "midLine"
-
-
+require "button"
 
 ---Load the entities 
 function love.load()
+   TitleScreen = true
+   SelectDifScreen = false
 
+   DifficultyRate = 0
+   
    --DO NOT CHANGE THESE VALUES
    FULL_WINDOW_HEIGHT = love.graphics.getHeight()
-   FULL_WINDOW_WIDTH = love.graphics.getWidth() 
+   FULL_WINDOW_WIDTH = love.graphics.getWidth()
+
+   StartBtn = Button:new((FULL_WINDOW_WIDTH - 50)/ 2, FULL_WINDOW_HEIGHT / 2
+   , 50, 100, function ()
+      TitleScreen = false
+   end, "Start")
+
+   SelectDifBtn = Button:new((FULL_WINDOW_WIDTH - 50)/2, (FULL_WINDOW_HEIGHT/2) + 100,
+   50, 100, function()
+      SelectDifScreen = true
+   end, "Select Dificulty")
+
+   --Buttons for each Dificulty--
+   EasyBtn = Button:new((FULL_WINDOW_WIDTH - 50)/ 2,  FULL_WINDOW_HEIGHT / 2,
+   50, 100, function()
+      AI:setDifficultyRate(0.50)
+      SelectDifScreen = false
+   end, "Easy")
+
+   MediumBtn = Button:new((FULL_WINDOW_WIDTH - 50)/ 2,  (FULL_WINDOW_HEIGHT / 2) + 100,
+   50, 100, function()
+      AI:setDifficultyRate(0.25)
+      SelectDifScreen = false
+   end, "Medium")
+
+   HardBtn = Button:new((FULL_WINDOW_WIDTH - 50)/ 2, (FULL_WINDOW_HEIGHT / 2) + 200, 
+   50, 100, function()
+      AI:setDifficultyRate(-0.01)
+      SelectDifScreen = false
+   end, "Hard")
 
    Player:load()
    Ball:load()
    AI:load()
    Line:load()
-   
-   TitleScreen = true
+
    Score = {player = 0, ai = 0}
 end
 
@@ -50,6 +84,18 @@ function love.update(dt)
 
    if love.keyboard.isDown("escape") then
       love.event.quit(0)
+   end
+end
+
+---This takes care on drawing the mainMenu
+local function mainMenuDraw()
+   if TitleScreen and not SelectDifScreen then
+      Button:drawBtn(StartBtn)
+      Button:drawBtn(SelectDifBtn)
+   elseif TitleScreen and SelectDifScreen then -- Draw difficulty Buttons
+      Button:drawBtn(EasyBtn)
+      Button:drawBtn(MediumBtn)
+      Button:drawBtn(HardBtn)
    end
 end
 
@@ -69,20 +115,64 @@ function love.draw()
 
       love.graphics.setColor(255,0,0) --Set color for the enemy
       love.graphics.print(baddieScore, (love.graphics.getWidth() - 50) - #baddieScore, 50)
-   else --Show title Screen
-      local title = "This is a test, press \'enter\'"
-      love.graphics.print(title, FULL_WINDOW_WIDTH / 2 - #title, 
-      FULL_WINDOW_HEIGHT /2 )
+   else 
+      mainMenuDraw()
    end
 end
 
----Gets the position of the mouse
+---Checks the position of the mouse
+---@param obj table the button that is being referenced
+---@param x integer the x position
+---@param y integer the y position
+---@param button integer the pressed button 
+---@return boolean 
+local function checkMousePosition(obj, x, y, button) 
+   if x >= obj.x and obj.width + obj.x >= x and y >= obj.y and obj.height + obj.y >= y and 
+   button == 1 then
+      return true
+   else
+      return false
+   end
+end
+
+---This is takes care the titleScreen section
+---@param x integer the x-position
+---@param y integer the y-position
+---@param button integer the button that is being pressed
+local function titleSection(x,y,button) 
+   if checkMousePosition(StartBtn, x, y, button) then
+      StartBtn.func()
+
+   elseif checkMousePosition(SelectDifBtn, x, y, button)then
+      SelectDifBtn.func()
+   end
+end
+
+---This takes care during the select difficulty segment
+---@param x integer the x-position
+---@param y integer the y-position
+---@param button integer the button that is being pressed
+local function difSelectSection(x,y,button)
+   
+   if checkMousePosition(EasyBtn,x,y,button)then
+      EasyBtn.func()
+   elseif checkMousePosition(MediumBtn, x,y,button) then
+      MediumBtn.func()
+   elseif checkMousePosition(HardBtn, x,y,button) then
+      HardBtn.func()
+   end
+   
+   
+end
+
+---Gets the position of the mouse and checks if there is a mouse press on the buttons
 ---@param x integer the position of the mouse at its X-Axis
 ---@param y integer the position of the mouse at its Y-Axis
-function love.mousemoved(x, y)
-   if x >= FULL_WINDOW_WIDTH / 2 - 50 and x <= FULL_WINDOW_WIDTH /2 + 50
-   and love.mouse.isDown(1) then
-      TitleScreen = false      
+function love.mousepressed(x, y, button)
+   if TitleScreen and not SelectDifScreen then
+      titleSection(x,y,button)
+   elseif SelectDifScreen then
+      difSelectSection(x,y,button)
    end
 end
 
