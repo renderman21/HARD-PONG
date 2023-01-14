@@ -83,6 +83,7 @@ function love.update(dt)
       Player:update(dt)
       Ball:update(dt)
       AI:update(dt)
+
    end
 
    if love.keyboard.isDown("escape") then
@@ -102,6 +103,18 @@ local function mainMenuDraw()
    end
 end
 
+---This display the speed, removing the velocity
+local function displaySpeed()
+   local speed = Ball.xVel
+
+   if Ball.xVel < 0 then
+      speed = Ball.xVel * -1
+      return speed
+   end
+
+   return speed
+end
+
 ---Draw stuff on the screen
 function love.draw()
    if not TitleScreen then
@@ -118,6 +131,9 @@ function love.draw()
 
       love.graphics.setColor(255,0,0) --Set color for the enemy
       love.graphics.print(baddieScore, (love.graphics.getWidth() - 50) - #baddieScore, 50)
+
+      love.graphics.setColor(255,255,255)
+      love.graphics.print("Speed "..displaySpeed(),(Line.width + Line.x) + 50, 50 )
    else 
       mainMenuDraw()
    end
